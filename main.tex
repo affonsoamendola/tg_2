@@ -1,0 +1,85 @@
+\documentclass[a4paper,dvipsnames,twocolumn]{article}
+
+
+\usepackage[a4paper,top=1.5cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=1.75cm]{geometry}
+
+
+% *******************   PAQUETES
+\usepackage[T1]{fontenc}
+\usepackage[brazilian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{bm}        % for math
+\usepackage{amssymb}   % for math
+\usepackage{amsmath}   % for math
+\usepackage{mathtools}   % for math
+\usepackage{amsfonts}
+\usepackage{textgreek}
+\usepackage{bbold}
+\usepackage{graphicx}
+\usepackage{color}   %May be necessary if you want to color links
+\usepackage{hyperref}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{multicol}
+\usepackage[shortlabels]{enumitem}
+\usepackage{tikz}
+\usetikzlibrary{angles,quotes}
+\usetikzlibrary{babel}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{empheq}
+\usepackage{stackengine}
+\usepackage{xcolor}
+\usepackage{indentfirst}
+
+\begin{document}
+
+\title{Relatório Parcial TG2}
+\author{Affonso Gino Amendola Neto\\
+Departamento de Astronomia - IAG/USP}
+\date{\today}
+
+
+\maketitle
+\section{Introdução}
+
+Para objetos como estrelas Be, que variam muito com o tempo, geralmente é necessária a coleta de grandes quantidades de dados, esses dados que devem ser armazenados em banco de dados de leitura para toda a comunidade interessada nos mesmos.
+
+No momento, existem alguns projetos que mantêm bancos de dados acessíveis com dados necessários para o estudo dessas estrelas, como o projeto BeSS ou o projeto BESOS, mas ambos possuem problemas que justificam a necessidade de existência de um novo banco de dados, como a falta de ferramentas de visualização e $cross-match$ no caso do projeto BeSS, ou a limitação a somente um $survey$ do projeto BESOS.
+
+\section{Objetivos}
+
+O projeto visa a elaboração do desenho conceitual de um novo banco de dados, apropriado para os nossos trabalhos de análise de dados.
+
+O banco de dados teria que ser auto-alimentavel, fazendo uso de projetos existentes como BeSS\footnote{http://basebe.obspm.fr/basebe/} e BESOS\footnote{http://besos.ifa.uv.cl/\#/}, e coleções de dados relevantes de projetos e observatórios como NRES, OPD, ESPADON, ESO.
+
+Ele também teria que ter interfaces facilitando visualização de dados, $cross-match$, manipulação, descoberta de eventos recentes entre os dados contidos no banco.
+
+O $upload$ de novos espectros para o banco também deve ser facilitado, permitindo o envio de conjuntos inteiros de espectros sem ser necessário o envio de arquivos individuais.
+
+\section{Resultados Preliminares}
+
+Sabendo que a maior parte da funcionalidade requerida pelo $software$ já existe na forma de bibliotecas e outros $softwares$ com licenças permissivas, então não é necessária a confecção de novos códigos específicos, bastando integrar o que já existe.
+
+Exemplos de software que podemos acabar utilizar no banco de dados são: MySQL, Docker, Apache Web Server, PHP, D3.js, NodeJS.
+
+No entanto, é preciso um profundo estudo sobre as partes componentes do software antes de integrar e configurar tudo na forma de um banco de dados utilizável, e até agora foi isso que tem sido feito com mais intensidade.
+
+Para isso, podemos utilizar exemplos como o Cosmopterix da International Virtual Observatory Alliance (IVOA) que nós dá uma imagem Docker com uma versão pré configurada de MySQL para testar a linguagem de query ADQL. 
+
+Essa imagem Docker já foi instalada num computador e averiguada, nos dando a conclusão pela utilização desse software pela praticidade de instalação que o Docker providenciaria para o nosso banco de dados, criando uma imagem de um servidor que funcionaria em um linux qualquer, ele funcionaria em qualquer outro linux da mesma arquitetura ($x86\_64, ARM, SPARC, etc$)
+
+Essa imagem contem um $web-server$ funcional, com uma versão de MySQL previamente instalada e configurada, as configurações dessa versão serão analisadas para a confecção de uma nova imagem Docker, especifica para o nosso projeto. 
+
+\section{Perspectivas}
+
+Com um servidor online e recebendo $requests$, o próximo passo seria escrever um programa para tratar dos $requests$ que estão chegando e devolver os arquivos necessários.
+
+Mas para fazer isso, precisamos de uma nova imagem Docker limpa, onde instalaremos MySQL, Apache, Python, e outros $softwares$ necessários, o processo de configuração e comunicação entre as partes é essencial, e é possivelmente a parte mais importante desse projeto, com tudo dependendo de uma relação harmoniosa entre as partes.
+
+Felizmente o $stack$ de MySQL, Apache, PHP ou Python é tido como um certo padrão nos círculos de $web development$. 
+
+Após termos um programa recebendo e cumprindo $requests$, partimos para a parte final do projeto, as interfaces de visualização, analise e upload de dados.
+
+Talvez não seja possível ao final do período alocado para esse projeto, a existência de um $software$ testado e em fase de "$roll-out$" ou seja pronto, mas definitivamente um protótipo (Nesse caso seria extremamente similar ao produto final, considerando seu escopo) e um $design-document$, explicando o processo realizado até agora de desenvolvimento, decisões tomadas e instruções para a conrtinuidade do desenvolvimento e/ou manutenção do banco.
+
+\end{document}

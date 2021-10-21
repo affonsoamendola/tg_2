@@ -1,0 +1,27 @@
+version: "3.8"
+
+services:
+  web:
+    build:
+      context: .
+    environment:
+    - FLASK_CONFIG=development
+    - FLASK_APP=beacondb/run.py
+    ports:
+    - 5000:5000
+    volumes:
+    - ./:/beacondb
+
+  sql_database:
+    image: mysql
+    ports:
+    - 3306:3306
+    environment:
+    - MYSQL_ROOT_PASSWORD=p@ssw0rd1
+    volumes:
+    - sql_database:/var/lib/
+    - sql_config:/etc/mysql/
+
+volumes:
+  sql_database:
+  sql_config:
