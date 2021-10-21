@@ -1,2 +1,1 @@
-# tg_2
-TG II - Electric Boogaloo
+# TG II - Electric Boogaloo
