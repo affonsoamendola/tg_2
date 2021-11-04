@@ -17,7 +17,7 @@ services:
     ports:
     - 3306:3306
     environment:
-    - MYSQL_ROOT_PASSWORD=p@ssw0rd1
+    - MYSQL_ROOT_PASSWORD="passw0rd1"
     volumes:
     - sql_database:/var/lib/
     - sql_config:/etc/mysql/

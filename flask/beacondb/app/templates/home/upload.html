@@ -12,7 +12,11 @@
   <div class="center">
     <h1>Upload new Spectra</h1>
     <br/>
-    {{ wtf.quick_form(form) }}
+    <form method="post" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+      {{ form.file }}
+      <input type="submit">
+    </form>
   </div>
 </div>
 {% endblock %}

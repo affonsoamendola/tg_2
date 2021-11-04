@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block body %}
+<div class="intro-header">
+    <table id="recent_additions" class="table table-borderless table">
+        <thead>
+            <tr>
+                <th>Target</th>
+                <th>MJD</th>
+                <th>Observator</th>
+            </tr>
+        </thead>
+        <tbody id="recent_additions_body">
+        {% for entry in recent_additions %}
+            <tr>
+                <td>{{ entry.target_name }}</td>
+                <td>{{ entry.mjd }}</td>
+                <td>{{ entry.observator }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
