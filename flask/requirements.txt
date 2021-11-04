@@ -7,3 +7,4 @@ Flask-Bootstrap==3.3.7.1
 pymysql==1.0.2
 cryptography>=2.20
 flask-migrate==3.1.0
+astropy>=1.20.3

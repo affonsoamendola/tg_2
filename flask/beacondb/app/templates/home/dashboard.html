@@ -1,21 +1,30 @@
 {% extends "base.html" %}
 {% block title %}Home{% endblock %}
 {% block body %}
-<div class="intro-header">
+<div class="dashboard">
     <table id="recent_additions" class="table table-borderless table">
         <thead>
             <tr>
                 <th>Target</th>
+                <th>RA</th>
+                <th>DEC</th>
                 <th>MJD</th>
                 <th>Observator</th>
+                <th>Site</th>
+                <th>Tools</th>
+                
             </tr>
         </thead>
         <tbody id="recent_additions_body">
         {% for entry in recent_additions %}
             <tr>
                 <td>{{ entry.target_name }}</td>
+                <td>{{ entry.ra }}</td>
+                <td>{{ entry.dec }}</td>
                 <td>{{ entry.mjd }}</td>
                 <td>{{ entry.observator }}</td>
+                <td>{{ entry.site }}</td>
+                <td><form method="post"><input type="submit" name="download_button" value={{entry.file}}></form></td>
             </tr>
         {% endfor %}
         </tbody>
