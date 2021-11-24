@@ -1,0 +1,23 @@
+\section{Protótipo}
+
+Usando as propostas do Capítulo anterior, foi começado o desenvolvimento de uma prova de conceito.
+
+A Stack proposta foi construida e está operando, ela tem varias funcionalidades esperadas em variados estados de desenvolvimento, ainda não sendo acessivel ao público.
+
+O protótipo mostra o perfeito funcionamento do Back-End do servidor, sendo ele implementado usando Python, Flask e MySQL.
+
+Ele está usando um modelo simplificado de requests de arquivos, por enquanto somente sendo possível fazer o download de um arquivo desejado por vez.
+
+Mas o protótipo mostra o funcionamento da parte mais importante, a interoperabilidade da pagina web com código python.
+
+Já que podemos transformar requests web em chamadas de funções de python, podemos executar qualquer analise desejada na biblioteca astropy, "emprestar" o poder de processamento do servidor ao cientista.
+
+No momento o software só usa essa habilidade para extrair informações de arquivos .FITS, mas junto dessas funções astropy existem outras, com funcionalidades muito mais avançadas.
+
+No entanto é nescessário algum cuidado com usando essa funcionalidade, já que estamos operando um website, temos que vigiar a quantidade de processamento disponível.
+
+A habilidade de "emprestar" o poder de processamento do servidor para fazer alguma analise pode acabar sobrecarregando o servidor, travando outras facetas de sua operação.
+
+Existem maneiras de se defender contra esse tipo de problema, podemos isolar algumas das analises mais comuns e précalcular elas para dados novos, em horários oportunos ao servidor, como no meio da noite quando menos pessoas estão trabalhando no servidor.
+
+Podemos também simplesmente impedir o usuário de fazer alguma análise, avisando um eventual estado de sobrecarga, pedindo para "Voltar mais tarde", ou agendar a analise para um momento oportuno.

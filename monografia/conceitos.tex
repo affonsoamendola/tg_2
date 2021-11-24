@@ -1,0 +1,106 @@
+\chapter{Conceitos Básicos}
+
+Quando falamos de "Software de Banco de Dados Astronômicos", geralmente estamos falando de uma combinação de vários tipos diferentes de programas, trabalhando em conjunto para nos trazer uma certa funcionalidade que desejamos.
+
+Esse tipo de software é geralmente dividido em duas partes, chamadas de Back-End, e Front-End, a combinação das duas é também chamado por Stack, ou Full-Stack.(\citealt{front_back_end})
+
+\begin{figure}[!ht]
+\begin{center}
+\setcaptionmargin{1cm}
+\includegraphics[width=1.0 \columnwidth,angle=0]{fig/front_back_end.png}
+\caption[Front-End/Back-End]{Ilustração do conceito de Front-End e Back-End, e a comunicação entre eles.} 
+\label{front_back_end_fig}
+\end{center}
+\end{figure}
+
+O Back-End geralmente consiste na estrutura que certo software precisa ter para realizar suas intenções, como Gerenciadores de Bancos de Dados (MySQL, MongoDB, PostgreSQL), servidores web (Apache, Flask) e conteinerização (Docker, Kubernetes).
+
+E o Front-End consiste na parte do software que é visível ao usuário, como páginas web (HTML, JavaScript e CSS) e aplicativos nativos de certo sistema operacional (Windows, Linux, MacOS).
+
+O Front-End se comunica com o Back-End através de protocolos de comunicação, o mais usado sendo HTTP, mas outras formas também existem, como SQL, podendo ser usada para se comunicar diretamente com um banco de dados, sem a necessidade de passar por algum outro servidor.\citealt{front_back_end}
+
+O Stack que propomos deverá ser executável em qualquer servidor moderno usando o sistema operacional Linux ou derivados, com o requisito de ser construído para arquiteturas modernas 64-bits, já que arquiteturas 32-bits já começaram a ser classificadas como obsoletas.%Citar Website PCBenchmarks pela informacao e pelo gráfico.
+
+\begin{figure}[!ht]
+\begin{center}
+\setcaptionmargin{1cm}
+\includegraphics[width=1.0 \columnwidth,angle=0]{fig/32_bit_v_64_bit.png}
+\caption[Uso histórico, 32-bit vs 64-bit]{Gráfico de uso histórico de arquiteturas 64-bits e 32-bits, em específico do uso de Sistemas Operacionais Windows nessas arquiteturas} 
+\label{32_bit_vs_64_bit}
+\end{center}
+\end{figure}
+
+Os bancos de dados existentes possuem certas características relevantes ao desenvolvimento do nosso Stack, em especial na forma como os dados são guardados, o banco de dados BeSS especificamente disponibiliza um documento que descreve entradas de header que precisam existir em arquivos .FITS enviados ao projeto.
+
+O software proposto também precisará receber dados de qualquer fonte, seja ela amadora ou profissional, portanto é interessante manter os dados com o mesmo nível de qualidade dos dados do BeSS, talvez até usando o mesmo formato, já que o projeto BeSOS apesar de ter a mesma uniformidade de qualidade de dados, não tem seus padrões definidos em nenhum lugar, já que seus dados vieram todos da mesma fonte, eles tem o mesmo set de headers.
+
+\section{Escolha de Software}
+
+A escolha correta de software pré-existente é essencial para um bom processo de desenvolvimento.
+
+Primeiramente, como a comunidade astronômica vem adotando Python como sua linguagem de programação favorita, foi determinado que soluções usando Python seriam priorizadas.
+
+Python é uma das linguagems que mais cresce no meio astronomico e científico, é uma linguagem de programação de alto nível, interpretada e fracamente tipada. (\citealt{software_use_in_astronomy})
+
+Ou seja, ela está "longe" do hardware; não precisa de um compilador, somente de um interpretador compatível com o sistema operacional de determinado computador onde o código deseja ser executado; e variaveis não precisam ser declaradas como sendo algum tipo antes de serem usadas, permitindo a fácil mudança de seus valores por valores de tipos diferentes.(\citealt{python3_manual})
+
+Essas características, juntamente com a simplicidade de sua escrita e facilidade de adição de novas bibliotecas, podem estar ligadas ao crescimento vertiginoso de Python no meio científico.(\citealt{software_use_in_astronomy})
+
+A simplicidade na escrita de código Python permite rápida prototipagem, especialmente em computadores a base de *nix (Unix, Linux, etc.) e possuí varias bibliotecas extremamente robustas e rápidas, sendo elas compiladas geralmente em linguagens mais rápidas, de baixo nível como C/Rust, usando a capacidade de Python de introduzir bindings a código compilado de C ou outras linguagens, permitindo que funções dessas linguagens sejam chamáveis pelo interpretador.(\citealt{python3_manual})
+
+Desenvolvimento Web em Python pode ser feito usando uma "Micro-Framework" chamada Flask, que adiciona novos recursos a linguagem que permitem "anotar" certas partes do código para serem iniciadas quando algum request HTTP chega no Flask, basicamente permitindo o código a servir esses requests, transformando o interpretador Python num servidor web completo.
+
+Ela também possuí recursos para comunicação com gerenciadores de Bancos de Dados como MySQL, MongoDB e outros, algo que também será necessário para o sucesso do projeto.
+
+Já que Flask usa a linguagem Python, todas as bibliotecas que estão disponíveis para Python, também estão disponíveis e acessíveis, já que a sua implementação é basicamente uma biblioteca padrão, como todas as outras.(\citealt{flask_website})
+
+Portanto, a "Micro-Framework" Flask foi escolhida para servir de base para a Back-End.
+
+Uma escolha essencial a ser feita é a de qual sistema de banco de dados seria o mais compatível com as intenções do Stack proposto.
+
+O Sistema de Banco de Dados Relacional Open-Source MySQL é um desses tipos de sistema e o grande número de projetos usando ele e a linguagem de consulta SQL indica uma grande probabilidade dele ser bem mantido por muitos anos por vir.\citealt{mysql_manual}
+
+\begin{figure}[!ht]
+\begin{center}
+\setcaptionmargin{1cm}
+\includegraphics[width=1.0 \columnwidth,angle=0]{fig/mysql_pie_chart.png}
+\caption[Comparação do uso de sistemas de banco de dados.]{Comparação do uso de sistemas de banco de dados.} 
+\label{mysql_pie_chart}
+\end{center}
+\end{figure}
+
+Outros sistemas existem, como MongoDB e PostgreSQL, mas a familiaridade de MySQL e a grande existência de documentação e a compatibilidade quase imediata com Flask, faz dela a melhor opção. 
+
+Uma necessidade interessante para o sucesso do projeto é a de fácil migração entre servidores, já que isso permite que software seja desenvolvido e testado em um computador, sabendo que ele operará de forma muito similar no servidor intencionado ao projeto.
+
+O software Docker permite a conteinerização de Stacks de servidores e diferentes formas de outros softwares, fazendo possível que todo o ambiente e infraestrutura que esses programas usam seja uniformemente acessível de varias configurações diferentes, contanto que o software Docker também esteja presente, isso é possível através da criação de imagens Docker que são usadas com sistemas de virtualização existentes no software.(\citealt{docker_manual})
+
+O Docker é uma solução alternativa a Máquinas Virtuais, o Docker opera dentro de um sistema operacional, e não substituindo ele como em maquinas virtuais, permitindo melhor performance, com o custo de uma maior dificuldade de implementação em sistemas impopulares, mas como pretendemos usar um servidor Linux, isso não será um problema.(\citealt{docker_img_source})
+
+\begin{figure}[!ht]
+\begin{center}
+\setcaptionmargin{1cm}
+\includegraphics[width=1.0 \columnwidth,angle=0]{fig/docker.png}
+\caption[Comparação de Docker com Máquinas Virtuais.]{Comparação do isolamento de ambiente de certo aplicativo em Máquinas Virtuais Tradicionais, e usando o software Docker.} 
+\label{docker_fig}
+\end{center}
+\end{figure}
+
+Infelizmente ainda existem muitas restrições no que é possível rodar num browser web, basicamente todo o Front-End está limitado a usar uma combinação de HTML, JavaScript e CSS (\citealt{limitations_web_design}), o problema surge ao notar que HTML é uma linguagem totalmente estática, com quase toda a parte dinâmica do website sendo adições posteriores ao padrão HTML, primeiramente na forma de JavaScript(\citealt{limitations_web_design}), e posteriormente na forma de CSS.
+
+Existe um padrão open-source moderno chamado WebAssembly (wasm) que visa disponibilizar uma interface mais baixo-nível em qualquer browser, permitindo que basicamente qualquer programa escrito em qualquer linguagem possa ser compilado para WebAssembly e funcionar nativamente em um browser, como se ele fosse um sistema operacional, ele foi usado com grande sucesso nos projetos WebArchive, e mais recentemente em um port das ferramentas Photoshop da Adobe para browsers.
+
+\begin{figure}[!ht]
+\begin{center}
+\setcaptionmargin{1cm}
+\includegraphics[width=0.6 \columnwidth,angle=0]{fig/photoshop.png}
+\caption[Exemplo do Photoshop usando WebAssembly.]{Exemplo do tipo de funcionalidade que podemos esperar de WebAssembly no futuro próximo.} 
+\label{docker_fig}
+\end{center}
+\end{figure}
+
+Mas o projeto WebAssembly ainda está em sua infância, apesar de promissor, ainda existem varias questões e dificuldades em sua utilização, como variações em implementações de motores de wasm, o fato do padrão ainda estar na sua primeira versão, 1.0. com uma versão 1.1 em estágio de rascunho.
+
+Talvez no futuro poderemos rever como confeccionamos páginas web, e iremos para um futuro onde podemos usar qualquer linguagem de programação.
+
+Felizmente não precisaremos de nenhum recurso exclusivo de padrões como WebAssembly, com a front-end podendo ser escrita na forma padrão da internet atual, usando HTML, JS, e CSS, contornando os problemas que surgem ao tomar essa decisão, como a falta de flexibilidade e dinamismo da página usando recursos modernos de CSS e JS.

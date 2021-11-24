@@ -1,0 +1,46 @@
+\chapter{Introdução}
+
+Estrelas Be são estrelas do tipo B que mostram linhas de emissão de hidrogênio, muitas vezes com variações no espectro, de forma que o fenômeno de emissão seja transitório.(\citealt{classical_be})
+
+\begin{figure}[!ht]
+\begin{center}
+\setcaptionmargin{1cm}
+\includegraphics[width=0.4 \columnwidth,angle=0]{fig/achernar.png}
+\caption[Representação Artística de Achernar]{Representação artística de uma estrela Be, Achernar.} 
+\label{achernar_fig}
+\end{center}
+\end{figure}
+
+A variabilidade de estrelas Be deu luz a alguns projetos de banco de dados criados com o objetivo de armazenar a grande quantidade de dados oriundas de observações desse tipo de estrela, já que múltiplas observações são necessárias, e toda observação pode ser valiosa num contexto futuro.
+
+Sendo dois projetos de destaque os projetos BeSS e BeSOS.
+
+\begin{figure}[!ht]
+\begin{center}
+\setcaptionmargin{1cm}
+\includegraphics[width=1.0 \columnwidth,angle=0]{fig/bess_screenshot.png}
+\caption[Screenshot do BeSS]{Captura de tela da interface do web-site do projeto BeSS;} 
+\label{bess_screenshot_fig}
+\end{center}
+\end{figure}
+
+O banco de dados do projeto BeSS (Be Star Survey Database) é o maior banco de dados desse tipo de estrela atualmente em existência, possuindo mais de 250 mil entradas de espectros, ele é mantido pelo LESIA (Laboratoire d'Études Spatiales et d'Instrumentation en Astrophysique) do Observatório de Paris.
+
+Esse projeto tem muitas relações com grupos de astrônomos amadores, algo importante para observações de estrelas Be, já que são estrelas variáveis, e eventos interessantes podem acontecer a qualquer momento.(\citealt{bess_database})
+
+\begin{figure}[!ht]
+\begin{center}
+\setcaptionmargin{1cm}
+\includegraphics[width=1.0 \columnwidth,angle=0]{fig/besos_screenshot.png}
+\caption[Screenshot do BeSOS]{Captura de tela da interface do web-site do projeto BeSOS;} 
+\label{besos_screenshot_fig}
+\end{center}
+\end{figure}
+
+Por outro lado, o projeto BeSOS tem imagens de somente um espectrógrafo especifico, mas possuí excelentes ferramentas de visualização de dados, como plotagem interativa e calculo de alguns valores relevantes a Ciência de estrelas Be.
+
+A criação de um banco de dados moderno, combinando o volume de dados presentes no BeSS com as ferramentas de visualização, análise e cross-matching do BeSOS está atualmente em andamento, e este trabalho é um plano, explicando e definindo todos os passos necessários para a criação de um software similar.(\citealt{besos_database})
+
+A grande maioria da funcionalidade requerida por um software desse tipo já existe livremente disponível na internet, na forma de bibliotecas FOSS (Free and Open-Source Software, software livre e de código aberto), então a maior parte do trabalho necessário consiste em escrever código que permita a interação harmoniosa entre as diferentes bibliotecas e providenciar uma interface de acesso ao usuário.
+
+Usando esses softwares, uma proposta detalhada deste software é feita no Capítulo 3 deste trabalho.

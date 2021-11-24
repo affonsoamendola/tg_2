@@ -1,0 +1,76 @@
+\chapter{Análise e Desenvolvimento}
+
+\section{Arquitetura}
+
+O Stack precisa ser totalmente contido em uma imagem docker para facil transporte entre diferentes sistemas permitindo rápido desenvolvimento.
+
+A maneira que isso pode ser feito é determinado majoritariamente pelo conteúdo de um arquivo chamado Dockerfile e usando o aplicativo Docker-Compose para criar duas imagens, uma de um sistema completo para o software de Banco de Dados, e uma para o Servidor Web.
+
+As imagens são separadas e se comunicam somente através de protocolos de comunicação especificos do sistema de banco de dados, permitindo uma camada adicional de segurança, acesso não autorizado ao sistema web não implica imediatamente no acesso ao banco de dados.
+
+É nescessário garantir que as imagens possuem todos os softwares e bibliotecas nescessárias para a operação do programa, isso é facilmente resolvido em sistemas Docker combinados com Python, usando um arquivo de texto chamado requirements.txt, que possuí uma lista das dependencias da imagem e de suas versões, o programa Docker, ao "construir" as imagens, pode por exemplo, enviar essa lista de dependencias ao software pip, um Gerenciador de Pacotes de Python, que por sua vez instala as dependencias na imagem.
+
+Essa lista pode ser facilmente alterada, e a imagem regenerada com a lista nova, permitindo grande oportunidade de prototipagem, sendo possível testar outras bibliotecas ou outras configurações, e em combinação com softwares de versionamento como Git, reverter para pontos no passado se as mudanças não funcionaram como intencionado.
+
+O servidor precisa de uma estrutura de arquivos especifica para funcionar, são nescessárias diferentes pastas em diferentes lugares para interagir com o programa, como por exemplo uma pasta onde todos os arquivos enviados pelos usuários serão armazenadas.
+
+\section{Programação do Back-End}
+
+O software proposto consiste primariamente em código Python, usando a Micro-Framework Flask para permitir a interação entre as diferentes partes do software.
+
+Flask permite a definição de funções especificas, marcadas com "Decorators" permitindo execução de uma parte especifica de código Python de acordo com algum tipo de request HTTP chegando no servidor.
+
+Isso nos dá a possíbilidade de receber um request HTTP engatilhado por um usuário numa página web ou app, e dependendo do conteúdo do request, podemos agir sobre do sofware MySQL, pedindo informação sobre algum arquivo especifico, sobre o qual podemos executar qualquer código (Seja ele em Python ou em outras linguagems de progamação, usando bindings de Python) em qualquer thread do computador abrigando o servidor, e, se parte do request, enviar os arquivos ou informações requisitadas.
+
+Os requests, portanto, precisam ser bem definidos, já que o Front-End e o Back-End são técnicamente independentes, é nescessário que ambos estejam falando a mesma língua, o Front-End não pode enviar um request de uma maneira que o Back-End não saiba tratar, e o Back-End não pode responder um request de uma maneira inesperada.
+
+O principal request solicitado pelo Front-End para esse tipo de página, será um request customizado com algum tipo de código SQL, pois esta é a maneira de extrair dados do banco, e esse é todo o propósito do projeto.
+
+Este código precisa ser checado por brechas de segurança, e não pode ser encaminhado diretamente ao banco de dados, já que código SQL puro pode conter instruções danosas, como tentar obter informações sem acesso permitido, como por exemplo uma tabela de hashes de senhas, que não é planejada no momento, mas poderá ser adicionada no futuro caso um sistema de Login seja implementado para identificar usuários que podem fazer upload de arquivos.
+
+Um ataque muito comum em meios de segurança de dados é o de SQL-Injection onde um hacker mal-intencionado envia uma sequência de código SQL de uma maneira especifica tentando burlar medidas de segurança mal implementadas, com consequências catastroficas, como vazamento de dados ou destruição de toda a tabela.
+
+Outra seção do código vulnerável a ataques é o de upload de arquivos, se aproveitando de como sistemas operacionais lidam com nomes de arquivos, isso no entanto, pode ser facilmente corrigido usando algumas funções pré-implementadas pelo Flask, como secure_filename(), que automaticamente remove caracteres perigosos como "." e "..", e transforma filenames referenciais para absolutos.
+
+\section{Tratamento De Dados}
+
+O software proposto precisará receber dados originarios de varias fontes diferentes, como os arquivos .FITS e .ZIP do projeto BeSS e .FITS do projeto BeSOS. 
+
+%listar diferencas dos projetos no apendice
+Cada um dos projetos usa uma nomenclatura diferente para os headers do arquivo FITS, como o projeto BeSS qua usa BESSNAME %Não é BESSNAME mas eu n lembro agora exatamente qual é%
+para o header do nome do alvo, diferentemente do usual TARGET %Confirmar informaçao
+, existem diferentes soluções para permitir o recebimento desses dados.
+
+Uma delas seria converter todos os arquivos que entrariam ao banco de dados para um formato único, essa provavelmente foi a solução adotada pelo projeto BeSS, essa sendo a origem de elementos customizados em seu header.
+
+Outra solução é escrever a seção de código que lida com a extração de informação de uma maneira que o deixa capaz de lidar com esses elementos customizados no header, e providenciar ao usuário com uma maneira de informar o programa que o dado que ele pretende enviar ao servidor é um dado originário de um certo projeto, e portanto seu arquivo .FITS tem headers especificos que possibilitariam a coleta de dados.
+
+Podemos usar as funções da biblioteca Astropy para abrir os arquivos .FITS e extrair informações tanto da seção de dados do arquivo, quanto da seção de header, precisamos de informações como:
+
+-Ascenção Reta e Declinação 
+-Nome do Observador
+-Observatório
+
+Para inserir junto do local do arquivo no banco de dados, marcando esses dados como indexaveis, para acelerar o acesso aos dados, já que estamos lidando com no mínimo 250 mil entradas e não podemos passar pelo processo de abrir todos os arquivos quando, por exemplo, um usuário requisitar todas as estrelas Be em volta de um certo ponto no céu.
+
+Usuários deverão ter a opção de enviar seus próprios dados ao servidor, passando pela moderação de alguem versado na ciência pros trás das observações, isso requer a existência de uma área no website onde usuários preenchem um formulário com informações relevantes e que possua um lugar onde usuários podem iniciar a operação de upload de um arquivo do seu próprio computador, usando os recursos de drag-and-drop de browsers e sistemas operacionais modernos.
+
+\section{Programação do Front-End}
+
+É proposta a confecção de um website, acessível pelos browsers modernos (Chromium, Firefox, Safari e Edge), onde o usuário poderá requisitar os espectros que desejar, ou fazer upload de suas próprias observações.
+
+O website proposto será servido pelo software Flask, que providencia uma interface entre Python e a combinação de HTML, Javascript e CSS que compõe o ecossistema de webpages.
+
+Ele precisará ter uma seção onde o usuário tem a opção de inserir um pequeno trecho de código SQL (Ou possívelmente ADQL, extensão de SQL específica para Astronomia.) e requisitar informações diretamente do banco de dados.
+
+Essa seção é crítica em termos de segurança de dados, providenciar ao usuário acesso direto a um banco de dados é um sério risco de vazamento ou destruição de dados, portanto qualquer Query precisa ser feita de forma segura, está checagem é realizada na Back-End, uma vez q um request é enviado.
+
+Juntamente com a capacidade de enviar Queries, é nescessário uma página onde o usuário consegue visualizar os resultados da sua Query, sejam eles positivos e na forma de uma lista com os objetos que satisfazem as limitações impostas.
+
+Também propomos uma maneira em que o usuário possa manipular e visualizar dinamicamente os dados obtidos com suas queries, usando bibliotecas que façam uso de recursos modernos de broswers como o D3.js
+
+Essas possíveis manipulações não podem alterar o conteúdo de arquivos guardados no banco de dados, mas é possível criar uma copia deles em memória que possa ser manipulada pelo usuário em tempo real.
+
+Devido a limitações com o ecossistema web e sua dependencia a HTML, o código de um sistema de manipulação dinâmica de espectros no browser é extremamente complexo, sendo mais possível usando padrões como WebAssembly, previamente mencionado, mas podemos pré-definir certas ações específicas que podem ser realizadas com os dados requeridos tanto em momento de Upload, pré-calculando certos valores que no futuro podem ser requisitados; quanto em momento de Download, alterando a versão do arquivo residente na memória RAM e retornando esta versão modificada ao invés da original.
+
+Isso é possível devido ao baixo nivel de acesso deste tipo de software, seria possível marcar certas entradas no banco de dados como requerendo pré-cálculo, ou análise automatizada, e realizando essas análises automaticamente quando o servidor não estiver sob carga muito grande.
